@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* Existing styles */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: white;
+            flex-direction: column;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            position: fixed;
+            bottom: 60px;
+            left: 115px;
+            border-radius: 50px;
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+        }
+        .profile img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .container {
+            width: 90%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 20px;
+            position: relative;
+            justify-items: center;
+        }
+        .box {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h3 {
+            margin-top: 0;
+            color: #007BFF;
+        }
+        .leaderboard {
+            background: #fff;
+            border: 2px solid #007BFF;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+        }
+        .leaderboard h3 {
+            text-align: center;
+            font-size: 24px;
+            color: #007BFF;
+        }
+        .leaderboard ol {
+            padding-left: 20px;
+        }
+        .leaderboard ol li {
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .leaderboard .medal {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        .leaderboard .points {
+            font-weight: bold;
+        }
+        input, select, button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        iframe {
+            border: none;
+        }
+        .task {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .task input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .badge-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile" id="profile">
+        <img src="https://i.imgur.com/RQcxomr.png" alt="Profile Picture">
+        <div id="profileName"></div>
+    </div>
+    
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>User Profile</h2>
+            <p>Name: <span id="modalProfileName"></span></p>
+            <p>Email: <span id="modalProfileEmail"></span></p>
+            <h3>Badges:</h3>
+            <ul class="badges-list" id="badgesList">
+                <!-- Badges will be appended here dynamically -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="leaderboard">
+            <h3>Leaderboard</h3>
+            <ol>
+                <li>
+                    <div class="rank">1</div>
+                    <div class="name-points">
+                        <div class="name">Christofer</div>
+                        <div class="points">500 points</div>
+                    </div>
+                    <img src="https://i.imgur.com/kV799Hh.jpeg" alt="Gold Medal" class="medal">
+                </li>
+                <li>
+                    <div class="rank">2</div>
+                    <div class="name-points">
+                        <div class="name">Fernando</div>
+                        <div class="points">400 points</div>
+                    </div>
+                    <img src="https://i.imgur.com/HPmoPHR.jpeg" alt="Silver Medal" class="medal">
+                </li>
+                <li>
+                    <div class="rank">3</div>
+                    <div class="name-points">
+                        <div class="name">Gilang</div>
+                        <div class="points">300 points</div>
+                    </div>
+                    <img src="https://i.imgur.com/BzQ84hQ.png" alt="Bronze Medal" class="medal">
+                </li>
+                <li>
+                    <div class="rank">4</div>
+                    <div class="name-points">
+                        <div class="name">Andra</div>
+                        <div class="points">200 points</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="rank">5</div>
+                    <div class="name-points">
+                        <div class="name">Handoko</div>
+                        <div class="points">100 points</div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <!-- To-Do List Section -->
+        <div class="box">
+            <h3>To-Do List</h3>
+            <div id="taskList"></div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="box">
+            <h3>Calendar</h3>
+            <h4>Create Event</h4>
+            <form id="eventForm" onsubmit="return createCalendarEvent()">
+                <input type="text" id="eventTitle" placeholder="Event Title" required />
+                <input type="date" id="eventDate" placeholder="Event Date" required />
+                <input type="time" id="eventTime" placeholder="Event Time" required />
+                <input type="email" id="eventEmail" placeholder="Guest Email" required />
+                <textarea id="eventDescription" placeholder="Event Description" rows="3" required></textarea>
+                <button type="submit">Create Event</button>
+            </form>
+            <div id="eventMessage" style="margin-top: 10px;"></div>
+        </div>
+
+        <!-- Assign Task Section -->
+        <div class="box">
+            <h3>Assign Task</h3>
+            <form id="assignTaskForm" onsubmit="return assignNewTask()">
+                <input type="text" id="taskName" placeholder="Task Name" required />
+                <input type="date" id="taskDeadline" placeholder="Task Deadline" required />
+                <input type="email" id="taskEmail" placeholder="Assign to (Email)" required />
+                <select id="taskWeight" required>
+                    <option value="">Select Task Weight</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+                <button type="submit">Assign Task</button>
+            </form>
+            <div id="assignMessage" style="margin-top: 10px;"></div>
+        </div>
+
+        <!-- View Employee Profile Section -->
+        <div class="box">
+            <h3>View Employee Profile</h3>
+            <form id="employeeProfileForm" onsubmit="return false;">
+                <select id="employeeIdSelect" required>
+                    <option value="">Select Employee ID</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+                <button type="button" onclick="viewEmployeeProfile()">View Profile</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function createTaskList() {
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = "";
+            google.script.run.withSuccessHandler(tasks => {
+                tasks.forEach(task => {
+                    const taskElement = document.createElement("div");
+                    taskElement.classList.add("task");
+                    taskElement.innerHTML = `
+                        <input type="checkbox" id="task-${task.id}" ${task.completed ? "checked" : ""}>
+                        <label for="task-${task.id}">${task.name}</label>
+                    `;
+                    taskList.appendChild(taskElement);
+                });
+            }).getTasks();
+        }
+
+        function viewEmployeeProfile() {
+            const employeeId = document.getElementById("employeeIdSelect").value;
+            if (!employeeId) return;
+
+            // Fetch profile data from Google Sheets
+            google.script.run.withSuccessHandler(profileData => {
+                document.getElementById("profileName").textContent = profileData.name;
+                document.getElementById("modalProfileName").textContent = profileData.name;
+                document.getElementById("modalProfileEmail").textContent = profileData.email;
+
+                const badgesList = document.getElementById("badgesList");
+                badgesList.innerHTML = "";
+                profileData.badges.forEach(badge => {
+                    const badgeItem = document.createElement("li");
+                    badgeItem.textContent = badge.badgeLabel;
+                    badgesList.appendChild(badgeItem);
+                });
+
+                document.getElementById("profileModal").style.display = "block";
+            }).fetchEmployeeProfile(employeeId);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            createTaskList();
+            // Populate employee ID select options
+            google.script.run.withSuccessHandler(employeeIds => {
+                const employeeIdSelect = document.getElementById("employeeIdSelect");
+                employeeIds.forEach(id => {
+                    const option = document.createElement("option");
+                    option.value = id;
+                    option.textContent = id;
+                    employeeIdSelect.appendChild(option);
+                });
+            }).fetchEmployeeIds();
+        });
+
+        // Close modal
+        document.querySelector(".close").onclick = () => {
+            document.getElementById("profileModal").style.display = "none";
+        };
+    </script>
+</body>
+</html>
